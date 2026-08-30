@@ -38,14 +38,22 @@
   "scripts": {
     "build": "tsup ./src/index.ts --format esm --dts --sourcemap --clean",
     "dev": "tsup ./src/index.ts --format esm --dts --sourcemap --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "peerDependencies": {
     "@expressive-code/core": "^0.40.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
     "@expressive-code/core": "^0.44.1",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
     "tsup": "^8.3.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.18.0"
   }
 }

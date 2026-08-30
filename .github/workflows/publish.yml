@@ -10,22 +10,6 @@ permissions:
 
 jobs:
   publish:
-    # TODO: switch to npm Trusted Publishing (OIDC) once this package has been
-    # published at least once. npm can't have a trusted publisher configured
-    # for a package that doesn't exist on the registry yet, so the first
-    # publish has to use NODE_AUTH_TOKEN below. After that first publish:
-    #   1. On npmjs.com, go to this package's Settings > Trusted Publisher,
-    #      and add a GitHub Actions publisher: repo "khaister/expressive-code-word-wrap",
-    #      workflow filename "publish.yml", environment left blank.
-    #   2. Remove `registry-url` from the "Setup Node" step below (it makes
-    #      setup-node write an empty _authToken line to .npmrc even when
-    #      NODE_AUTH_TOKEN is unset, which blocks npm from falling back to
-    #      OIDC — see https://github.com/actions/setup-node/issues/1551).
-    #   3. Remove the `NODE_AUTH_TOKEN` env line from the "Publish" step, and
-    #      remove the NPM_TOKEN repo secret.
-    #   4. Add a step before "Publish" that runs `npm install -g npm@latest`
-    #      (Trusted Publishing needs npm CLI 11.5.1+, which Node 22's bundled
-    #      npm may not meet).
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +19,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          registry-url: https://registry.npmjs.org
       - name: Install dependencies
         run: npm ci
       - name: Typecheck
@@ -56,7 +39,7 @@ jobs:
             TAG="latest"
           fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Ensure npm supports Trusted Publishing
+        run: npm install -g npm@latest
       - name: Publish
         run: npm publish --provenance --tag ${{ steps.npm-tag.outputs.tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

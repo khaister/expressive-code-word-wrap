@@ -1,6 +1,6 @@
 {
   "name": "@khaister/expressive-code-word-wrap",
-  "version": "0.1.0",
+  "version": "0.0.1-alpha.0",
   "description": "An Expressive Code plugin that adds a button to manually toggle word wrap on individual code blocks.",
   "keywords": [
     "expressive-code",

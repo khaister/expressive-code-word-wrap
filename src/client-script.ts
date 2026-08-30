@@ -48,4 +48,4 @@ wordWrapObserver.observe(document.body, { childList: true, subtree: true })
 
 // Re-initialize after view transitions initiated by popular frameworks
 document.addEventListener('astro:page-load', () => initButtons(document))
-`
+`;

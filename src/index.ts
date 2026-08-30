@@ -1,8 +1,8 @@
-import { AttachedPluginData, createInlineSvgUrl, definePlugin, PluginStyleSettings, PluginTexts } from '@expressive-code/core'
-import type { ResolverContext } from '@expressive-code/core'
-import { getClassNames, getInlineStyles, h, matches, select, setInlineStyle } from '@expressive-code/core/hast'
-import type { Element } from '@expressive-code/core/hast'
-import { wordWrapClientScript } from './client-script'
+import { AttachedPluginData, createInlineSvgUrl, definePlugin, PluginStyleSettings, PluginTexts } from '@expressive-code/core';
+import type { ResolverContext } from '@expressive-code/core';
+import { getClassNames, getInlineStyles, h, matches, select, setInlineStyle } from '@expressive-code/core/hast';
+import type { Element } from '@expressive-code/core/hast';
+import { wordWrapClientScript } from './client-script';
 
 export interface PluginWordWrapOptions {
 	/**
@@ -16,7 +16,7 @@ export interface PluginWordWrapOptions {
 	 *
 	 * @default true
 	 */
-	showButton?: boolean | undefined
+	showButton?: boolean | undefined;
 	/**
 	 * If `true`, wrapped lines will be indented to align with their original
 	 * indentation level once word wrap is toggled on, matching the behavior of
@@ -28,7 +28,7 @@ export interface PluginWordWrapOptions {
 	 *
 	 * @default true
 	 */
-	preserveIndent?: boolean | undefined
+	preserveIndent?: boolean | undefined;
 }
 
 export interface WordWrapStyleSettings {
@@ -38,12 +38,12 @@ export interface WordWrapStyleSettings {
 	 * Expects a string in the format `url("data:image/svg+xml,...")`, which can
 	 * be generated from the contents of an SVG file using `createInlineSvgUrl`.
 	 */
-	icon: string
+	icon: string;
 }
 
 declare module '@expressive-code/core' {
 	export interface StyleSettings {
-		wordWrap: WordWrapStyleSettings
+		wordWrap: WordWrapStyleSettings;
 	}
 }
 
@@ -60,21 +60,21 @@ export const wordWrapStyleSettings = new PluginStyleSettings({
 			]),
 		},
 	},
-})
+});
 
 export const pluginWordWrapTexts = new PluginTexts({
 	tooltip: 'Toggle word wrap',
-})
+});
 
 /**
  * Tracks the button built for each code block in `postprocessRenderedBlock` (where we still
  * have access to the block's locale), so it can be inserted into the right spot once every
  * plugin has finished rendering every block in the group (see `postprocessRenderedBlockGroup`).
  */
-const wordWrapData = new AttachedPluginData<{ button?: Element | undefined }>(() => ({}))
+const wordWrapData = new AttachedPluginData<{ button?: Element | undefined }>(() => ({}));
 
 function getWordWrapBaseStyles(context: ResolverContext) {
-	const { cssVar } = context
+	const { cssVar } = context;
 	return `
 		/* Positions the button when there's no frames copy button group to join
 		   (e.g. plugin-frames isn't installed, or its copy button is disabled) */
@@ -160,7 +160,7 @@ function getWordWrapBaseStyles(context: ResolverContext) {
 		pre:has(+ .copy > .ec-word-wrap-button) :nth-child(1 of .ec-line) .code {
 			padding-inline-end: calc(4rem + ${cssVar('codePaddingInline')});
 		}
-	`
+	`;
 }
 
 /**
@@ -169,9 +169,9 @@ function getWordWrapBaseStyles(context: ResolverContext) {
  * wrapped it in a `figure` element).
  */
 function findPreElement(node: Element): Element | undefined {
-	if (matches('pre', node)) return node
-	const found = select('pre', node)
-	return found?.type === 'element' ? found : undefined
+	if (matches('pre', node)) return node;
+	const found = select('pre', node);
+	return found?.type === 'element' ? found : undefined;
 }
 
 /**
@@ -181,14 +181,14 @@ function findPreElement(node: Element): Element | undefined {
  * children array (which `postprocessRenderedBlockGroup` doesn't expose per block).
  */
 function wrapNodeInPlace(node: Element, className: string, extraChildren: Element[]) {
-	const originalContents: Element = { type: 'element', tagName: node.tagName, properties: node.properties, children: node.children }
-	node.tagName = 'div'
-	node.properties = { className: [className] }
-	node.children = [originalContents, ...extraChildren]
+	const originalContents: Element = { type: 'element', tagName: node.tagName, properties: node.properties, children: node.children };
+	node.tagName = 'div';
+	node.properties = { className: [className] };
+	node.children = [originalContents, ...extraChildren];
 }
 
 export function pluginWordWrap(options: PluginWordWrapOptions = {}) {
-	const { showButton = true, preserveIndent = true } = options
+	const { showButton = true, preserveIndent = true } = options;
 
 	return definePlugin({
 		name: 'Word Wrap',
@@ -197,37 +197,37 @@ export function pluginWordWrap(options: PluginWordWrapOptions = {}) {
 		jsModules: showButton ? [wordWrapClientScript] : undefined,
 		hooks: {
 			postprocessRenderedBlock: ({ codeBlock, renderData, locale }) => {
-				const texts = pluginWordWrapTexts.get(locale)
-				const blockAst = renderData.blockAst
+				const texts = pluginWordWrapTexts.get(locale);
+				const blockAst = renderData.blockAst;
 
-				const preElement = findPreElement(blockAst)
-				if (!preElement) return
+				const preElement = findPreElement(blockAst);
+				if (!preElement) return;
 
 				// Always provide the CSS variable the wrap styles rely on, even if this
 				// block was not statically configured with `wrap: true`. This ensures
 				// manually toggling wrap on the client works for every code block.
-				const maxLineLength = codeBlock.getLines().reduce((max, line) => Math.max(max, line.text.length), 0)
-				setInlineStyle(preElement, '--ecMaxLine', `${maxLineLength}ch`)
+				const maxLineLength = codeBlock.getLines().reduce((max, line) => Math.max(max, line.text.length), 0);
+				setInlineStyle(preElement, '--ecMaxLine', `${maxLineLength}ch`);
 
 				// Compute a hanging indent for every line so wrapped continuations line up
 				// under their line's original indentation, matching the built-in `preserveIndent` option
 				if (preserveIndent) {
-					const codeElement = select('code', preElement)
-					const lineElements = (codeElement?.type === 'element' ? codeElement.children : []).filter((node): node is Element => node.type === 'element')
+					const codeElement = select('code', preElement);
+					const lineElements = (codeElement?.type === 'element' ? codeElement.children : []).filter((node): node is Element => node.type === 'element');
 					codeBlock.getLines().forEach((line, lineIndex) => {
-						const lineElement = lineElements[lineIndex]
-						if (!lineElement) return
+						const lineElement = lineElements[lineIndex];
+						if (!lineElement) return;
 						// Don't override an indent that was already computed by core
 						// because this block was statically configured with `wrap: true`
-						if (getInlineStyles(lineElement).has('--ecIndent')) return
-						const indent = line.text.match(/^\s*/)?.[0].length ?? 0
-						if (indent > 0) setInlineStyle(lineElement, '--ecIndent', `${indent}ch`)
-					})
+						if (getInlineStyles(lineElement).has('--ecIndent')) return;
+						const indent = line.text.match(/^\s*/)?.[0].length ?? 0;
+						if (indent > 0) setInlineStyle(lineElement, '--ecIndent', `${indent}ch`);
+					});
 				}
 
-				if (!showButton) return
+				if (!showButton) return;
 
-				const isWrapped = getClassNames(preElement).includes('wrap')
+				const isWrapped = getClassNames(preElement).includes('wrap');
 
 				// Build the button now (while we still have `locale` for its tooltip text), but
 				// don't insert it yet — where it goes depends on whether plugin-frames has
@@ -243,29 +243,29 @@ export function pluginWordWrap(options: PluginWordWrapOptions = {}) {
 						'aria-pressed': isWrapped ? 'true' : 'false',
 					},
 					[h('div')]
-				)
-				wordWrapData.setFor(codeBlock, { button })
+				);
+				wordWrapData.setFor(codeBlock, { button });
 			},
 			postprocessRenderedBlockGroup: ({ renderedGroupContents }) => {
-				if (!showButton) return
+				if (!showButton) return;
 
 				renderedGroupContents.forEach(({ codeBlock, renderedBlockAst }) => {
-					const { button } = wordWrapData.getOrCreateFor(codeBlock)
-					if (!button) return
+					const { button } = wordWrapData.getOrCreateFor(codeBlock);
+					if (!button) return;
 
 					// If plugin-frames rendered a copy button for this block (regardless of
 					// whether it's listed before or after this plugin), join its button group
 					// so ours matches its size, spacing and auto-hide behavior exactly.
-					const copyDiv = select('.copy', renderedBlockAst)
+					const copyDiv = select('.copy', renderedBlockAst);
 					if (copyDiv?.type === 'element') {
-						copyDiv.children.unshift(button)
-						return
+						copyDiv.children.unshift(button);
+						return;
 					}
 
 					// Otherwise, render our own positioned button
-					wrapNodeInPlace(renderedBlockAst, 'ec-word-wrap-container', [h('div', { className: 'word-wrap-button-slot' }, [button])])
-				})
+					wrapNodeInPlace(renderedBlockAst, 'ec-word-wrap-container', [h('div', { className: 'word-wrap-button-slot' }, [button])]);
+				});
 			},
 		},
-	})
+	});
 }

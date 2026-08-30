@@ -18,9 +18,9 @@ Import the plugin's initialization function and add it to your Expressive Code c
 
 ```js
 // astro.config.mjs
-import { defineConfig } from "astro/config";
-import astroExpressiveCode from "astro-expressive-code";
-import { pluginWordWrap } from "expressive-code-word-wrap";
+import { defineConfig } from 'astro/config';
+import astroExpressiveCode from 'astro-expressive-code';
+import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
 
 export default defineConfig({
   integrations: [
@@ -35,14 +35,14 @@ export default defineConfig({
 
 ```js
 // astro.config.mjs
-import { defineConfig } from "astro/config";
-import starlight from "@astrojs/starlight";
-import { pluginWordWrap } from "expressive-code-word-wrap";
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
 
 export default defineConfig({
   integrations: [
     starlight({
-      title: "My Docs",
+      title: 'My Docs',
       expressiveCode: {
         plugins: [pluginWordWrap()],
       },
@@ -54,7 +54,7 @@ export default defineConfig({
 ### Plain Expressive Code (e.g. Next.js via `remark-expressive-code`)
 
 ```js
-import { pluginWordWrap } from "expressive-code-word-wrap";
+import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
 
 const config = {
   plugins: [pluginWordWrap()],
@@ -76,7 +76,7 @@ pluginWordWrap({
   // matching the built-in `preserveIndent` option
   // Default: true
   preserveIndent: true,
-})
+});
 ```
 
 ## Styling

@@ -9,6 +9,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Expressive Code Word Wrap',
+			pagefind: false,
 			logo: {
 				src: './src/assets/logo.svg',
 				alt: 'Expressive Code Word Wrap logo',

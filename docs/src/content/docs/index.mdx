@@ -8,7 +8,7 @@ hero:
   image:
     html: |
       <svg viewBox="0 0 48 48">
-        <rect x="1.5" y="1.5" width="45" height="45" rx="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5" />
+        <rect x="1.5" y="1.5" width="45" height="45" rx="9.6" fill="#ffffff" stroke="#e0e0e0" stroke-width="0.45" />
         <g transform="translate(11 11) scale(1.083)" fill="none" stroke="#181818" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="m16 16-3 3 3 3" />
           <path d="M3 12h14.5a1 1 0 0 1 0 7H13" />
@@ -30,16 +30,16 @@ head:
   - tag: style
     content: >-
       .hero > .hero-html {
-        width: min(80%, 22rem);
+        width: min(64%, 17.6rem);
       }
       @media (min-width: 50rem) {
         .hero > .hero-html {
-          width: min(100%, 26rem);
+          width: min(80%, 20.8rem);
         }
       }
       .hero-html {
         transform: rotate(-14deg);
-        filter: drop-shadow(0.5rem 0.9rem 1.4rem rgba(0, 0, 0, 0.18));
+        filter: drop-shadow(0.5rem 0.9rem 2.4rem rgba(0, 0, 0, 0.12));
       }
       .hero-html svg {
         width: 100%;
@@ -60,4 +60,26 @@ export default defineConfig({
 		}),
 	],
 });
+```
+
+## See it in action
+
+Once configured, your code blocks will display a word wrap toggle button in the toolbar. Click it to enable or disable word wrapping on long lines. The toggle allows readers to view code in their preferred style—wrapped for readability or unwrapped to see the full line width at a glance.
+
+```md showLineNumbers wrap
+# Getting Started with the Word Wrap Plugin
+
+This plugin adds a convenient toggle button to code blocks, allowing your readers to switch between word-wrapped and non-wrapped views. This is particularly useful for long lines of code, configuration files, or any content where line length matters.
+
+## Features
+
+- **Interactive Toggle**: A button in the code block toolbar lets readers choose their preferred view
+- **Persistent State**: The preference can be saved using browser storage for a better user experience
+- **Accessibility**: Fully keyboard accessible and works with screen readers
+- **Performance**: Lightweight implementation that doesn't impact page load times
+- **Responsive**: Works seamlessly on mobile, tablet, and desktop devices
+
+## Configuration Options
+
+You can customize the plugin behavior by passing options to the `pluginWordWrap()` function in your astro.config.mjs file. The plugin respects the natural line breaks in your content and provides a smooth transition when toggling between states.
 ```

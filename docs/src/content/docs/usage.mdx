@@ -1,0 +1,139 @@
+---
+title: Usage
+description: How to install, configure, and style the Expressive Code Word Wrap plugin.
+---
+
+The Word Wrap plugin extends [Expressive Code](https://expressive-code.com/) to add a button to every code block, letting readers manually toggle word wrap on and off — similar to the built-in "Copy to clipboard" button.
+
+Expressive Code already supports [word wrap](https://expressive-code.com/key-features/word-wrap/), but only as a static, build-time setting (`wrap: true` in a code fence's meta string, or as a `defaultProps` config). This plugin adds a button on top of that built-in support, so readers can toggle wrapping on and off for themselves at read time, independently of how (or whether) `wrap` was configured when the page was authored.
+
+## Set-up
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Steps>
+
+1. Install the `@khaister/expressive-code-word-wrap` dependency using your preferred package manager:
+
+   ```sh
+   npm install @khaister/expressive-code-word-wrap
+   ```
+
+2. Add the plugin to your site's Expressive Code configuration:
+
+   <Tabs>
+
+   <TabItem label="Astro">
+
+   ```js title="astro.config.mjs" ins={3,8}
+   import { defineConfig } from 'astro/config';
+   import astroExpressiveCode from 'astro-expressive-code';
+   import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
+
+   export default defineConfig({
+   	integrations: [
+   		astroExpressiveCode({
+   			plugins: [pluginWordWrap()],
+   		}),
+   	],
+   });
+   ```
+
+   </TabItem>
+
+   <TabItem label="Starlight">
+
+   ```js title="astro.config.mjs" ins={3,10}
+   import { defineConfig } from 'astro/config';
+   import starlight from '@astrojs/starlight';
+   import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
+
+   export default defineConfig({
+   	integrations: [
+   		starlight({
+   			title: 'My Docs',
+   			expressiveCode: {
+   				plugins: [pluginWordWrap()],
+   			},
+   		}),
+   	],
+   });
+   ```
+
+   </TabItem>
+
+   <TabItem label="EC config file">
+
+   ```js title="ec.config.mjs" ins={1,4}
+   import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
+
+   export default {
+   	plugins: [pluginWordWrap()],
+   };
+   ```
+
+   </TabItem>
+
+   </Tabs>
+
+3. That's it! Every code block now has a toggle button that switches word wrap on and off.
+
+</Steps>
+
+## Options
+
+No further configuration is required after adding the plugin as shown above. If you want to customize its behavior, pass options to `pluginWordWrap()`:
+
+```js
+pluginWordWrap({
+	// Set to `false` to hide the button and only compute the CSS
+	// variables word wrap needs (useful if you want to build your own UI)
+	// Default: true
+	showButton: true,
+
+	// Keep wrapped lines aligned with their original indentation level,
+	// matching the built-in `preserveIndent` option
+	// Default: true
+	preserveIndent: true,
+});
+```
+
+### `showButton`
+
+**Default:** `true`
+
+Whether to render the toggle button into each code block. Set this to `false` if you only want the plugin to compute the `--ecMaxLine` and `--ecIndent` CSS variables word wrap relies on, and intend to build your own toggle UI.
+
+### `preserveIndent`
+
+**Default:** `true`
+
+Whether wrapped lines should stay aligned with their original indentation level, matching the behavior of Expressive Code's built-in `preserveIndent` option.
+
+## Styling
+
+This plugin registers a `wordWrap` style setting namespace that can be customized via Expressive Code's `styleOverrides` config option, the same way you'd customize any other plugin's styles:
+
+```js
+{
+	plugins: [pluginWordWrap()],
+	styleOverrides: {
+		wordWrap: {
+			// icon: createInlineSvgUrl([...]),
+		},
+	},
+},
+```
+
+### `icon`
+
+The icon used for the toggle button. Defaults to the [`text-wrap`](https://lucide.dev/icons/text-wrap) icon from [Lucide](https://lucide.dev/).
+
+## Composing with other plugins
+
+This plugin composes with `@expressive-code/plugin-frames` — if you use both, the button joins the same button group as "Copy to clipboard", matching its size, spacing, and hover auto-hide behavior exactly. Plugin order in the `plugins` array doesn't matter.
+
+## Support
+
+This is open-source software.
+If you run into any bugs, please [report issues on GitHub](https://github.com/khaister/expressive-code-word-wrap/issues).

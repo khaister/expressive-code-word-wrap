@@ -1,0 +1,63 @@
+---
+title: Expressive Code Word Wrap
+description: Let readers manually toggle word wrap on individual code blocks with the Expressive Code Word Wrap plugin.
+template: splash
+hero:
+  title: Word Wrap
+  tagline: An Expressive Code Plugin
+  image:
+    html: |
+      <svg viewBox="0 0 48 48">
+        <rect x="1.5" y="1.5" width="45" height="45" rx="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1.5" />
+        <g transform="translate(11 11) scale(1.083)" fill="none" stroke="#181818" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m16 16-3 3 3 3" />
+          <path d="M3 12h14.5a1 1 0 0 1 0 7H13" />
+          <path d="M3 19h6" />
+          <path d="M3 5h18" />
+        </g>
+      </svg>
+  actions:
+    - text: Get started
+      link: /expressive-code-word-wrap/usage/
+      icon: right-arrow
+    - text: Star on GitHub
+      link: https://github.com/khaister/expressive-code-word-wrap
+      icon: star
+      variant: minimal
+head:
+  - tag: title
+    content: Word Wrap — An Expressive Code Plugin
+  - tag: style
+    content: >-
+      .hero > .hero-html {
+        width: min(80%, 22rem);
+      }
+      @media (min-width: 50rem) {
+        .hero > .hero-html {
+          width: min(100%, 26rem);
+        }
+      }
+      .hero-html {
+        transform: rotate(-14deg);
+        filter: drop-shadow(0.5rem 0.9rem 1.4rem rgba(0, 0, 0, 0.18));
+      }
+      .hero-html svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+---
+
+```js title="astro.config.mjs"
+import { defineConfig } from 'astro/config';
+import astroExpressiveCode from 'astro-expressive-code';
+import { pluginWordWrap } from '@khaister/expressive-code-word-wrap';
+
+export default defineConfig({
+	integrations: [
+		astroExpressiveCode({
+			plugins: [pluginWordWrap()],
+		}),
+	],
+});
+```

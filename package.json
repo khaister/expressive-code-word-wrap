@@ -22,6 +22,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "workspaces": [
+    "docs"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -41,7 +44,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docs:dev": "npm run dev --workspace=docs",
+    "docs:build": "npm run build --workspace=docs"
   },
   "peerDependencies": {
     "@expressive-code/core": "^0.44.1"
